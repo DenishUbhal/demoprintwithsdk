@@ -1,0 +1,101 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.demoprintwithsdk">
+
+    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
+         calls FlutterMain.startInitialization(this); in its onCreate method.
+         In most cases you can leave this as-is, but you if you want to provide
+         additional functionality it is fine to subclass or reimplement
+         FlutterApplication and put your custom class here. -->
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.hardware.usb.accessory" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.usb.host" />
+
+    <application
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="BNI"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- This keeps the window background of the activity showing
+                 until Flutter renders its first frame. It can be removed if
+                 there is no splash screen (such as the default splash screen
+                 defined in @style/LaunchTheme). -->
+            <meta-data
+                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name=".DeviceBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".PrinterConnectDialog"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name" android:theme="@android:style/Theme.Light">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            </intent-filter>
+
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+        <!-- 端口设置对话 -->
+        <activity android:name=".PortConfigurationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/port_configuration" android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <!-- 蓝牙设备 -->
+        <activity android:name=".BluetoothDeviceList"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/bluetooth_device_list" android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <!-- USB设备 -->
+        <activity android:name=".UsbDeviceList"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/usb_devices_list" android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity android:name=".CustomerDiaplayActivity">
+        </activity>
+
+        <service android:name="com.printer.service.PrinterPrintService"
+
+            android:label="PrinterPrintService">
+            <intent-filter>
+                <action android:name="com.printer.aidl.PrinterPrintService" />
+            </intent-filter>
+        </service>
+        <service android:name="com.printer.service.AllService">
+        </service>
+    </application>
+</manifest>

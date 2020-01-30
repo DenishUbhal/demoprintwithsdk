@@ -1,0 +1,15 @@
+include ':app',':jcc-bate-0.7.3',':ksoap2-android-assembly-2.5.2-jar-with-dependencies',':xUtils-2.6.14',':printersdkv22(standard_neutral)'
+
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+
+def plugins = new Properties()
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+if (pluginsFile.exists()) {
+    pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+}
+
+plugins.each { name, path ->
+    def pluginDirectory = flutterProjectRoot.resolve(path).resolve('android').toFile()
+    include ":$name"
+    project(":$name").projectDir = pluginDirectory
+}
